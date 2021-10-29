@@ -59,8 +59,14 @@ function initialize() {
 app.use("/api/auth", authRouter)
 app.use('/api/test', exampleRouter)
 
+const petRoutes = require('./controllers/pet.controller')
+app.use('/pets', petRoutes)
+const imgRoutes = require('./controllers/image.controller')
+app.use('/images', imgRoutes)
+
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+

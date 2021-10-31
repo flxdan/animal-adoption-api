@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const app = express();
 
-var whitelist = ["http://localhost:3000", 'https://scary-vault-59712.herokuapp.com']
+var whitelist = ["http://localhost:3000", 'https://flxdan.github.io']
 
 var corsOptions = {
   origin: function (origin, callback) {

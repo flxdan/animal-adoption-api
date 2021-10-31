@@ -5,9 +5,17 @@ const cors = require("cors");
 
 const app = express();
 
+var whitelist = ["http://localhost:3000", 'https://flxdan.github.io', 'http://localhost:8080']
+
 var corsOptions = {
-  origin: "http://localhost:3000"
-};
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 app.use(cors(corsOptions));
 

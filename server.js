@@ -71,6 +71,8 @@ const petRoutes = require('./controllers/pet.controller')
 app.use('/pets', petRoutes)
 const imgRoutes = require('./controllers/image.controller')
 app.use('/images', imgRoutes)
+const searchRoutes = require('./controllers/search.controller')
+app.use('/search', searchRoutes)
 
 
 const PORT = process.env.PORT || 8080;

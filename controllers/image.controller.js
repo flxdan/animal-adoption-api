@@ -36,6 +36,7 @@ router.get('/', (req, res) => {
             return;
         }
         res.status(200).send(imgs);
+    })
 })
 
 router.delete('/:id', (req, res) => {

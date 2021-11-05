@@ -13,10 +13,21 @@ router.get('/:terms', (req, res, next) => {
     
     const regexTerm = new RegExp(searchTerms.join("|"), 'i')
     
-    Pet.find({ $or: [ { petName: {$regex: regexTerm} }, { type: {$regex: regexTerm} }, { breed: {$regex: regexTerm} }, { age: {$regex: regexTerm} }, { disposition: {$regex: regexTerm} }, { availability: {$regex: regexTerm} }, { description: {$regex: regexTerm} } ] })
-        .then(results => {
-            res.status(200).json(results);
-        })
+    Pet.find({ $or: [
+        { petName: {$regex: regexTerm} },
+        { type: {$regex: regexTerm} },
+        { breed: {$regex: regexTerm} },
+        { age: {$regex: regexTerm} },
+        { disposition: {$regex: regexTerm} },
+        { availability: {$regex: regexTerm} },
+        { description: {$regex: regexTerm} }
+    ] }, (err, pets) => {
+        if (err) {
+            res.status(500).send({message: err});
+            return;
+        }
+        res.status(200).send(pets);
+    })
 })
 
 module.exports = router;

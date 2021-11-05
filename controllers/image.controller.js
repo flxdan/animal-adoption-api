@@ -5,45 +5,57 @@ router.use(express.json());
 
 
 // CONTROLLER FUNCTIONS
-router.post('/', (req, res, next) => {
+router.post('/', (req, res) => {
     const new_img = new Image({pet_id: req.body.pet_id, imgData: req.body.file});
-    new_img.save().then(result => {
-            res.status(201).send(result.id);
+    new_img.save((err, img) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        res.status(201).send(img.id)
     })
 });
 
-router.get('/:id', (req, res, next) => {
-    Image.findById(req.params.id)
-        .then(this_img => {
-            if (this_img){
-                res.status(200).send(this_img);
-            }
-            else {
-                res.status(400).json({'Error' : 'No image with this id'})
-            }
-        })
+router.get('/:id', (req, res) => {
+    Image.findById(req.params.id, (err, img) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        if (!img) {
+            res.status(404).send({ message: 'Image Not Found'});
+        }
+        res.status(200).send(img);
+    })
 })
 
-router.get('/', (req, res, next) => {
-    Image.find({}).then(result => {
-        res.status(200).json(result);
-      })
+router.get('/', (req, res) => {
+    Image.find({}, (err, imgs) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        res.status(200).send(imgs);
 })
 
-router.delete('/:id', (req, res, next) => {
-    Image.findByIdAndRemove(req.params.id)
-        .then(result => {
-            res.status(204).end()
-        })
-        .catch(error => next(error))
+router.delete('/:id', (req, res) => {
+    Image.findByIdAndRemove(req.params.id, (err, img) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        res.status(204).end()
+    })
 })
 
-router.put('/:id', (req, res, next) => {
-    Image.findByIdAndUpdate(req.params.id, {pet_id: req.body.pet_id, imgData: req.body.file})
-        .then(this_image => {
-            res.status(200).json(this_image)
-        })
-        .catch(error => next(error))
+router.put('/:id', (req, res) => {
+    Image.findByIdAndUpdate(req.params.id, {pet_id: req.body.pet_id, imgData: req.body.file}, (err, img) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        res.status(200).send(img)
+    })
 })
 
 module.exports = router;

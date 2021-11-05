@@ -38,70 +38,99 @@ const update_pet = (body) => {
 }
 
 // CONTROLLER FUNCTIONS
-router.post('/', (req, res, next) => {
+router.post('/', (req, res) => {
     if (Object.keys(req.body).length != 9) {
         res.status(400).json({'Error' : 'Missing Attributes'})
     }
     else {
         const new_pet = create_pet(req.body);
-        new_pet.save().then(result => {
-            res.status(201).send(result);
+        new_pet.save((err, pet) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            res.status(201).send(pet)
         })
     }
 });
 
-router.get('/:id', (req, res, next) => {
-    Pet.findById(req.params.id)
-        .then(this_pet => {
-            if (this_pet){
-                res.status(200).send(this_pet);
+router.get('/:id', (req, res) => {
+    Pet.findById(req.params.id, (err, pet) => {
+        if (err) {
+            res.status(500).send({message: err});
+            return
+        }
+        if (!pet) {
+            res.status(404).send({ message: 'Pet Not Found' });
+            return;
+        }
+        res.status(200).send(pet);
+    });
+})
+
+router.get('/', (req, res) => {
+    Pet.find({}, (err, pets) => {
+        if (err) {
+            res.status(500).send({ messge: err });
+            return
+        }
+        res.status(200).send(pets)
+    })
+})
+
+router.delete('/:id', (req, res) => {
+    Pet.findByIdAndRemove(req.params.id, (err, pet) => {
+        if (err) {
+            res.status(500).send({ messge: err });
+            return
+        }
+        Image.deleteMany({ pet_id: req.params.id }, (err, imgs) => {
+            if (err) {
+                res.status(500).send({messge: err});
+                return
             }
-            else {
-                res.status(400).json({'Error' : 'No pet with this id'})
-            }
+            res.status(204).end()
         })
+    })
 })
 
-router.get('/', (req, res, next) => {
-    Pet.find({}).then(result => {
-        res.status(200).json(result);
-      })
-})
-
-router.delete('/:id', (req, res, next) => {
-    Pet.findByIdAndRemove(req.params.id)
-        .then(result => {
-            Image.deleteMany({ pet_id: req.params.id })
-                .then(res.status(204).end())
-        })
-        .catch(error => next(error))
-})
-
-router.put('/:id', (req, res, next) => {
+router.put('/:id', (req, res) => {
     if (Object.keys(req.body).length != 9) {
         res.status(400).json({'Error' : 'Missing Attributes'})
     }
     else {
         const new_pet = update_pet(req.body);
-        Pet.findByIdAndUpdate(req.params.id, new_pet)
-            .then(this_pet => {
-                res.status(200).json(this_pet)
-            })
-            .catch(error => next(error))
+        Pet.findByIdAndUpdate(req.params.id, new_pet, (err, pet) => {
+            if (err) {
+                res.status(500).send({message: err});
+                return;
+            }
+            if (!pet) {
+                res.status(404).send({ message: 'Pet Not Found' });
+                return;
+            }
+            res.status(200).send(pet)
+        })
     }
 })
 
-router.get('/:id/images', (req, res, next) => {
-    Pet.findById(req.params.id)
-        .then(this_pet => {
-        if (!this_pet){
-            res.status(400).json({'Error' : 'No pet with this id'});
+router.get('/:id/images', (req, res) => {
+    Pet.findById(req.params.id, (err, pet) => {
+        if (err) {
+            res.status(500).send({message: err});
+            return
         }
-        else {
-            Image.find({pet_id: {$in: req.params.id}}).then(images => {
-                res.status(200).send(images)
-            })
+        if (!pet) {
+            res.status(404).send({ message: 'Pet Not Found' });
+            return;
         }
+        Image.find({ pet_id: {$in: req.params.id} }, (err, imgs) => {
+            if (err) {
+                res.status(500).send({message: err});
+                return
+            }
+            res.status(200).send(imgs)
+        })
     })
 })
 

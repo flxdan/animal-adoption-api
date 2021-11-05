@@ -134,4 +134,23 @@ router.get('/:id/images', (req, res) => {
     })
 })
 
+router.delete('/:id/images', (req, res) => {
+    Pet.findById(req.params.id, (err, pet) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return
+        }
+        if (!pet) {
+            res.status(404).send({ message: 'Pet Not Found' } )
+        }
+        Image.deleteMany({ pet_id: req.params.id }, (err, imgs) => {
+            if (err) {
+                res.status(500).send({messge: err});
+                return
+            }
+            res.status(204).end()
+        })
+    })
+})
+
 module.exports = router;

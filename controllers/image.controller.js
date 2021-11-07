@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-    Image.findByIdAndRemove(req.params.id, (err, img) => {
+    Image.findByIdAndRemove(req.params.id, (err) => {
         if (err) {
             res.status(500).send({ message: err });
             return;

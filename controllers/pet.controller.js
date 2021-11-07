@@ -84,7 +84,7 @@ router.delete('/:id', (req, res) => {
             res.status(500).send({ messge: err });
             return
         }
-        Image.deleteMany({ pet_id: req.params.id }, (err, imgs) => {
+        Image.deleteMany({ pet_id: req.params.id }, (err) => {
             if (err) {
                 res.status(500).send({messge: err});
                 return
@@ -142,8 +142,9 @@ router.delete('/:id/images', (req, res) => {
         }
         if (!pet) {
             res.status(404).send({ message: 'Pet Not Found' } )
+            return
         }
-        Image.deleteMany({ pet_id: req.params.id }, (err, imgs) => {
+        Image.deleteMany({ pet_id: req.params.id }, (err) => {
             if (err) {
                 res.status(500).send({messge: err});
                 return

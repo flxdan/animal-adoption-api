@@ -4,7 +4,6 @@ const Image = require('../models/image.model');
 router.use(express.json());
 
 
-// CONTROLLER FUNCTIONS
 router.post('/', (req, res) => {
     const new_img = new Image({pet_id: req.body.pet_id, imgData: req.body.file});
     new_img.save((err, img) => {

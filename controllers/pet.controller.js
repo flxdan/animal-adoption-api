@@ -4,7 +4,7 @@ const Pet = require('../models/pet.model');
 const Image = require('../models/image.model');
 router.use(express.json());
 
-// HELPER FUNCTIONS
+
 const create_pet = (body) => {
     const {petName, type, breed, age, disposition, fixed, availability, description, dateAdded} = body;
     const new_pet = new Pet({
@@ -37,7 +37,7 @@ const update_pet = (body) => {
     return new_pet
 }
 
-// CONTROLLER FUNCTIONS
+
 router.post('/', (req, res) => {
     if (Object.keys(req.body).length != 9) {
         res.status(400).json({'Error' : 'Missing Attributes'})
@@ -69,13 +69,14 @@ router.get('/:id', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-    Pet.find({}, (err, pets) => {
+    Pet.find({}).sort({dateAdded: -1})
+    .exec((err, pets) => {
         if (err) {
             res.status(500).send({ messge: err });
             return
         }
         res.status(200).send(pets)
-    })
+    });
 })
 
 router.delete('/:id', (req, res) => {

@@ -12,7 +12,7 @@ router.get('/:terms', (req, res, next) => {
     searchTerms = searchTerms.filter(item => !removeThese.includes(item))
     
     const regexTerm = new RegExp(searchTerms.join("|"), 'i')
-    
+
     Pet.find({ $or: [
         { petName: {$regex: regexTerm} },
         { type: {$regex: regexTerm} },
@@ -21,7 +21,8 @@ router.get('/:terms', (req, res, next) => {
         { disposition: {$regex: regexTerm} },
         { availability: {$regex: regexTerm} },
         { description: {$regex: regexTerm} }
-    ] }, (err, pets) => {
+    ] }).sort({dateAdded: -1})
+    .exec((err, pets) => {
         if (err) {
             res.status(500).send({message: err});
             return;

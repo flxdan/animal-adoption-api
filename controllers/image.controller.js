@@ -4,7 +4,6 @@ const Image = require('../models/image.model');
 router.use(express.json());
 
 
-// CONTROLLER FUNCTIONS
 router.post('/', (req, res) => {
     const new_img = new Image({pet_id: req.body.pet_id, imgData: req.body.file});
     new_img.save((err, img) => {
@@ -40,7 +39,7 @@ router.get('/', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-    Image.findByIdAndRemove(req.params.id, (err, img) => {
+    Image.findByIdAndRemove(req.params.id, (err) => {
         if (err) {
             res.status(500).send({ message: err });
             return;

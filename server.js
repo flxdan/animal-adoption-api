@@ -73,6 +73,8 @@ const imgRoutes = require('./controllers/image.controller')
 app.use('/images', imgRoutes)
 const searchRoutes = require('./controllers/search.controller')
 app.use('/search', searchRoutes)
+const newsRoutes = require('./controllers/news.controller')
+app.use('/news', newsRoutes)
 
 
 const PORT = process.env.PORT || 8080;

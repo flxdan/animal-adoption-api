@@ -14,7 +14,7 @@ const create_news_item=(body) => {
 }
 
 router.get('/', (req, res) => {
-    News.find({}).exec((err, news) => {
+    News.find({}).sort({dateAdded: -1}).exec((err, news) => {
         if (err) {
             res.status(500).send({ messge: err });
             return

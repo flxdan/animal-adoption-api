@@ -75,7 +75,8 @@ const searchRoutes = require('./controllers/search.controller')
 app.use('/search', searchRoutes)
 const newsRoutes = require('./controllers/news.controller')
 app.use('/news', newsRoutes)
-
+const userRouter = require('./controllers/users.conroller')
+app.use('/users', userRouter)
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

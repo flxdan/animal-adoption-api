@@ -41,7 +41,7 @@ const update_pet = (body) => {
 
 
 router.post('/', (req, res) => {
-    if (Object.keys(req.body).length != 9) {
+    if (Object.keys(req.body).length != 10) {
         res.status(400).json({'Error' : 'Missing Attributes'})
     }
     else {
@@ -98,7 +98,7 @@ router.delete('/:id', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-    if (Object.keys(req.body).length != 9) {
+    if (Object.keys(req.body).length != 10) {
         res.status(400).json({'Error' : 'Missing Attributes'})
     }
     else {

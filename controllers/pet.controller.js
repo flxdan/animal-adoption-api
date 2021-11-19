@@ -6,11 +6,12 @@ router.use(express.json());
 
 
 const create_pet = (body) => {
-    const {petName, type, breed, age, disposition, fixed, availability, description, dateAdded} = body;
+    const {petName, type, breed, gender, age, disposition, fixed, availability, description, dateAdded} = body;
     const new_pet = new Pet({
         petName: petName,
         type: type,
         breed: breed,
+        gender: gender,
         age: age,
         disposition: disposition,
         fixed: fixed,
@@ -22,11 +23,12 @@ const create_pet = (body) => {
 }
 
 const update_pet = (body) => {
-    const {petName, type, breed, age, disposition, fixed, availability, description, dateAdded} = body;
+    const {petName, type, breed, gender, age, disposition, fixed, availability, description, dateAdded} = body;
     const new_pet = {
         petName: petName,
         type: type,
         breed: breed,
+        gender: gender,
         age: age,
         disposition: disposition,
         fixed: fixed,

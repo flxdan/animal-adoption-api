@@ -6,19 +6,27 @@ router.use(express.json());
 
 router.get('/:terms', (req, res, next) => {
     const searchString = req.params.terms;
-
     let searchTerms = [...new Set(searchString.split(' '))]
+    
+    let genderTerm = ''
+    if (searchTerms.includes('male')) {
+        genderTerm = 'Male'
+    }
+    else if (searchTerms.includes('female')) {
+        genderTerm = 'Female'
+    }
+    
     if (searchTerms.includes('children')) {searchTerms.append('kids')}
     const removeThese = ['and', 'with', 'a', 'the', 'in', 'an', 'are', 'at', 'all'];
     searchTerms = searchTerms.filter(item => !removeThese.includes(item))
-    
-    const regexTerm = new RegExp(searchTerms.join('|'), 'i')
 
+    const regexTerm = new RegExp(searchTerms.join('|'), 'i')
+    
     Pet.find({ $or: [
         { petName: {$regex: regexTerm} },
         { type: {$regex: regexTerm} },
         { breed: {$regex: regexTerm} },
-        { gender: {$regex: regexTerm} },
+        { gender: {$eq: genderTerm}},
         { age: {$regex: regexTerm} },
         { disposition: {$regex: regexTerm} },
         { availability: {$regex: regexTerm} },

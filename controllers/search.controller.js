@@ -16,7 +16,7 @@ router.get('/:terms', (req, res, next) => {
         genderTerm = 'Female'
     }
     
-    if (searchTerms.includes('children')) {searchTerms.append('kids')}
+    if (searchTerms.includes('children')) {searchTerms.push('kids')}
     const removeThese = ['and', 'with', 'a', 'the', 'in', 'an', 'are', 'at', 'all'];
     searchTerms = searchTerms.filter(item => !removeThese.includes(item))
 

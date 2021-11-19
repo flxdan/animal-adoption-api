@@ -18,6 +18,7 @@ router.get('/:terms', (req, res, next) => {
         { petName: {$regex: regexTerm} },
         { type: {$regex: regexTerm} },
         { breed: {$regex: regexTerm} },
+        { gender: {$regex: regexTerm} },
         { age: {$regex: regexTerm} },
         { disposition: {$regex: regexTerm} },
         { availability: {$regex: regexTerm} },

@@ -24,12 +24,9 @@ const removeFavorite = async (user, petID) => {
     delete user.accessToken;
     delete user.authorities
     var userData = await User.findOne({username: user.username}).populate('favorites');
-    console.log(petID)
-    console.log("--")
+
     let newArray = userData.favorites.filter((entry) => entry.petName != petID);
     
-    console.log("--")
-    console.log(newArray)
     user.favorites = [...newArray]
 
     return user

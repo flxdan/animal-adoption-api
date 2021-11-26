@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const newsSchema = new mongoose.Schema({
     headline: String,
     blurb: String,
-    dateAdded: Date
+    dateAdded: String
 });
 
 const News = mongoose.model('News', newsSchema);
